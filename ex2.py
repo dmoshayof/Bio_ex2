@@ -1,11 +1,10 @@
-import csv
 import numpy as np
 import random
 from copy import deepcopy as dc
 from Bio_ex2 import show_image
 
-
-adjMatrix = np.loadtxt(open("Bio_ex2/adjMatrix.csv"), delimiter=",")
+ADJ_PATH = "Bio_ex2/adjMatrix.csv"
+adjMatrix = np.loadtxt(ADJ_PATH, delimiter=",")
 COLORS = ['G', 'R', 'B', 'L']
 START_FIT = 0
 NUM_OF_NODES = 12
@@ -21,9 +20,9 @@ class Engine:
 
     def run(self):
         population = self._initialize_population()
-        best = self.pick_best(population)
-        print(best[1])
-        colors_map = show_image.set_coloring_for_image(best)
+        avg_fitness, best_fitness = self.pick_best(population)
+        print(avg_fitness,best_fitness[1])
+        colors_map = show_image.set_coloring_for_image(best_fitness)
         show_image.image(colors_map)
 
     def _initialize_population(self):
@@ -38,16 +37,18 @@ class Engine:
             population.append((coloring, fitness))
         return population
 
-    def pick_best(self,population):
+    def pick_best(self, population):
+
         population.sort(key=lambda x: x[1])
-        return population[0]
+        fitnesses = [f[1] for f in population]
+        avg = sum(fitnesses) / len(fitnesses)
+        return avg, population[0]
 
     def calc_fitness(self, coloring):
         fitness = 0
-        for v,color in coloring.items():
+        for v, color in coloring.items():
             fitness += v.validate_coloring(coloring, color)
         return fitness
-
 
 
 class Graph:

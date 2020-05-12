@@ -1,5 +1,7 @@
 import cv2
 
+IMAGE_PATH = 'Bio_ex2/map.PNG'
+
 
 def set_coloring_for_image(coloring):
     colors_num = {}
@@ -14,8 +16,9 @@ def set_coloring_for_image(coloring):
             colors_num[v.ID] = [147, 112, 219]
     return colors_num
 
+
 def image(colors_i):
-    img = cv2.imread('Bio_ex2/map.PNG')
+    img = cv2.imread(IMAGE_PATH)
     part1 = (41, 58)
     part2 = (90, 56, 175)
     part3 = (118, 57, 108)
@@ -40,7 +43,7 @@ def image(colors_i):
     img[178:213, 103:127] = colors_i[4]  # down
     img[178:192, 103:154] = colors_i[4]  # side
 
-    img[part5[0]:215, part5[1]:181] = colors_i[5]
+    img[part5[0]:214, part5[1]:181] = colors_i[5]
 
     img[part6[0]:85, part6[1]:368] = colors_i[6]  # main
     img[part6[0]:105, part6[2]:368] = colors_i[6]  # down-side
@@ -48,7 +51,9 @@ def image(colors_i):
     img[part7[0]:125, part7[1]:285] = colors_i[7]  # all
 
     img[109:197, 288:318] = colors_i[8]  # left
-    img[129:197, 210:318] = colors_i[8]
+    img[129:183, 250:318] = colors_i[8]
+    img[175:197, 273:290] = colors_i[8]  # small squre
+    img[129:153, 211:318] = colors_i[8]
 
     img[part9[0]:191, part9[1]:247] = colors_i[9]  # up
     img[185:214, 185:270] = colors_i[9]  # down
