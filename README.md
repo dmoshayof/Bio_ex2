@@ -26,7 +26,9 @@ and the best solutions are chosen for next generation according to Fitness funct
         return fitness
 ```
 The solution is a valid coloring s.a:
+
 ![map](solution.png)
+
 # Requerments
  * cv2
  * numpy
