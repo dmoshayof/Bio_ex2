@@ -21,6 +21,7 @@ class Engine:
     def run(self):
         population = self._initialize_population()
         best = self.pick_best(population)
+        print(best[1])
         colors_map = self.set_coloring_for_image(best)
         self.image(colors_map)
 
@@ -49,43 +50,68 @@ class Engine:
         colors_num = {}
         for v, color in coloring[0].items():
             if color == 'G':
-                colors_num[v.ID] = [0,255,0]
+                colors_num[v.ID] = [152,251,152]
             if color == 'R':
-                colors_num[v.ID] = [0, 0, 255]
+                colors_num[v.ID] = [204, 255, 255]
             if color == 'B':
-                colors_num[v.ID] = [255,0,0]
+                colors_num[v.ID] = [245,147,101]
             if color == 'L':
-                colors_num[v.ID] = [0, 0, 0]
+                colors_num[v.ID] = [147, 112, 219]
         return colors_num
 
 
 
     def image(self,colors_i):
         img = cv2.imread('Bio_ex2/map.PNG')
-        part1 = (60,60)
-        part2 = (100,80)
-        part3 = (130,80)
+        part1 = (41,58)
+        part2 = (90,56,175)
+        part3 = (118,57,108)
         part4 = (200,80)
-        part5 = (200,160)
-        part6 = (60,290)
-        part7 = (100,250)
+        part5 = (195,130)
+        part6 = (42,212,290)
+        part7 = (89,212)
         part8 = (130,300)
-        part9 = (200,200)
-        part10 = (200,280)
-        part11 = (240,20)
-        part12 = (240, 160)
-        img[part1[0]:80, part1[1]:100] = colors_i[1]
-        img[part2[0]:110, part2[1]:100] = colors_i[2]
-        img[part3[0]:150, part3[1]:110] = colors_i[3]
-        img[part4[0]:210, part4[1]:120] = colors_i[4]
-        img[part5[0]:210, part5[1]:170] = colors_i[5]
-        img[part6[0]:90, part6[1]:350] = colors_i[6]
-        img[part7[0]:120, part7[1]:260] = colors_i[7]
-        img[part8[0]:170, part8[1]:310] = colors_i[8]
-        img[part9[0]:210, part9[1]:260] = colors_i[9]
-        img[part10[0]:210, part10[1]:350] = colors_i[10]
-        img[part11[0]:250, part11[1]:155] = colors_i[11]
-        img[part12[0]:250, part12[1]:420] = colors_i[12]
+        part9 = (156,174)
+        part10 = (201,273,322,110)
+        part11 = (218,15,10)
+        part12 = (218, 160,10,373,265)
+
+        img[part1[0]:85, part1[1]:208] = colors_i[1] #all
+
+        img[part2[0]:113, part2[1]:208] = colors_i[2] #up
+        img[part2[0]:153, part2[2]:208] = colors_i[2]  #down-side
+
+        img[part3[0]:163, part3[1]:170] = colors_i[3] #main
+        img[163:174, part3[2]:170] = colors_i[3]
+        img[174:192, 156:170] = colors_i[3] #small squre
+
+        img[167:213, 58:103] = colors_i[4] #main
+        img[178:213, 103:127] = colors_i[4] #down
+        img[178:192, 103:154] = colors_i[4] #side
+
+        img[part5[0]:215, part5[1]:181] = colors_i[5]
+
+        img[part6[0]:85, part6[1]:368] = colors_i[6] #main
+        img[part6[0]:105, part6[2]:368] = colors_i[6] #down-side
+
+        img[part7[0]:125, part7[1]:285] = colors_i[7] #all
+
+        img[109:197, 288:318] = colors_i[8] #left
+        img[129:197, 210:318] = colors_i[8]
+
+        img[part9[0]:191, part9[1]:247] = colors_i[9] #up
+        img[185:214, 185:270] = colors_i[9] #down
+
+        img[part10[3]:212, part10[2]:368] = colors_i[10] #middel
+        img[part10[0]:213, part10[1]:368] = colors_i[10] #down
+
+        img[part11[0]:250, part11[1]:155] = colors_i[11] #down
+        img[part11[1]:240, part11[1]:54] = colors_i[11] #side
+        img[part11[2]:37, part11[1]:260] = colors_i[11] #up
+
+        img[part12[2]:37, part12[4]:420] = colors_i[12] #up
+        img[part12[2]:250, part12[3]:420] = colors_i[12] #side
+        img[part12[0]:250, part12[1]:420] = colors_i[12] #down
 
         cv2.imshow("img", img)
 
@@ -132,7 +158,7 @@ class Node:
 
 
 params = {
-    'population_size': 100,
+    'population_size': 10000,
     'mutation_probability': 0.05,
     'crossover_probability': 0.8,
     'num vertex': 12
