@@ -91,7 +91,7 @@ class Node:
 
 
 params = {
-    'population_size': 100,
+    'population_size': 10000,
     'mutation_probability': 0.05,
     'crossover_probability': 0.8,
     'num vertex': 12
