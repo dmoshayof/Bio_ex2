@@ -17,7 +17,7 @@ Every generation there is a use of genetic operators s.a:
 and the best solutions are chosen for next generation according to Fitness function:
 ```python
     #coloring- dictionary of vertex:color
-    def validate_coloring(self, coloring, this_color):
+    def self_fitness(self, coloring, this_color):
         fitness = 0
         for v, color in coloring.items():
             if v.ID in self.neighbours_index:
