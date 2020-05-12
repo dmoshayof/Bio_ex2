@@ -1,6 +1,8 @@
-import numpy as np
 import random
 from copy import deepcopy as dc
+
+import numpy as np
+
 from Bio_ex2 import show_image
 
 ADJ_PATH = "Bio_ex2/adjMatrix.csv"
@@ -20,8 +22,8 @@ class Engine:
 
     def run(self):
         population = self._initialize_population()
-        avg_fitness, best_fitness = self.pick_best(population)
-        print(avg_fitness,best_fitness[1])
+        avg_fitness, best_fitness = self._pick_best(population)
+        print(avg_fitness, best_fitness[1])
         colors_map = show_image.set_coloring_for_image(best_fitness)
         show_image.image(colors_map)
 
@@ -33,21 +35,20 @@ class Engine:
             for v in graph.nodes.values():
                 chosen_color = random.choice(COLORS)
                 coloring[v] = chosen_color
-            fitness = self.calc_fitness(coloring)
+            fitness = self._calc_fitness(coloring)
             population.append((coloring, fitness))
         return population
 
-    def pick_best(self, population):
-
+    def _pick_best(self, population):
         population.sort(key=lambda x: x[1])
         fitnesses = [f[1] for f in population]
         avg = sum(fitnesses) / len(fitnesses)
         return avg, population[0]
 
-    def calc_fitness(self, coloring):
+    def _calc_fitness(self, coloring):
         fitness = 0
         for v, color in coloring.items():
-            fitness += v.validate_coloring(coloring, color)
+            fitness += v.self_fitness(coloring, color)
         return fitness
 
 
@@ -78,7 +79,7 @@ class Node:
     def set_neighbours(self, node_n):
         self.neighbours_obj[node_n.ID] = node_n
 
-    def validate_coloring(self, coloring, this_color):
+    def self_fitness(self, coloring, this_color):
         count = 0
         for v, color in coloring.items():
             if v.ID in self.neighbours_index:
@@ -91,7 +92,7 @@ class Node:
 
 
 params = {
-    'population_size': 10000,
+    'population_size': 1000,
     'mutation_probability': 0.05,
     'crossover_probability': 0.8,
     'num vertex': 12
