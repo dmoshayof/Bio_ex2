@@ -70,6 +70,6 @@ def image(colors_i):
     img[part12[0]:250, part12[1]:420] = colors_i[12]  # down
 
     cv2.imshow("img", img)
-
-    cv2.waitKey()
+    key = cv2.waitKey(1000)
+    #cv2.waitKey()
     cv2.destroyAllWindows()

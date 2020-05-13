@@ -16,16 +16,59 @@ class Engine:
     def __init__(self, graph, parameters):
         self.graph = graph
         self.population_size = parameters['population_size']
-        self.mutation_probability = parameters['mutation_probability']
-        self.crossover_probability = parameters['crossover_probability']
+        self.top_solutions_probability = int(parameters['top_solutions_probability'] * self.population_size)
+        self.mutation_probability = int(parameters['mutation_probability'] * self.population_size)
+        self.crossover_probability = int(parameters['crossover_probability'] * self.population_size)
         self.num_of_vertex = parameters['num vertex']
+        self.num_iter = parameters['number_of_iterations']
 
     def run(self):
+        random.seed()
         population = self._initialize_population()
-        avg_fitness, best_fitness = self._pick_best(population)
-        print(avg_fitness, best_fitness[1])
-        colors_map = show_image.set_coloring_for_image(best_fitness)
-        show_image.image(colors_map)
+        for i in range(self.num_iter):
+            avg_fitness, best_fitness, top_solutions, rest_population = self._pick_best(population)
+            new_crossovers = self.crossover(rest_population)
+            population = top_solutions + new_crossovers
+            self.mutate(population)
+            print(avg_fitness, best_fitness[1],len(population))
+            colors_map = show_image.set_coloring_for_image(best_fitness)
+            show_image.image(colors_map)
+            if best_fitness[1] == 0:
+                break
+
+    def mutate(self,population):
+        for i in range(self.mutation_probability):
+            gene = random.choice(population)
+            rand_vertex = random.choice(list(gene[0].keys()))
+            gene[0][rand_vertex] = random.choice(COLORS)
+            fitness = self._calc_fitness(gene[0])
+            new_gene = (gene[0],fitness)
+            population[population.index(gene)] = new_gene
+
+
+
+    def crossover(self,population):
+        new_population = []
+        for gene1 in population:
+            gene2 = random.choice(population)
+            cutoff = random.randint(0,self.num_of_vertex)
+            coloring = {}
+            count = 0
+            for v,color in gene1[0].items():
+                if count == cutoff:
+                    break
+                coloring[v] = color
+                count +=1
+            count = 0
+            for v, color in gene2[0].items():
+                count +=1
+                if count < cutoff:
+                    continue
+                coloring[v] = color
+            fitness = self._calc_fitness(coloring)
+            new_population.append((coloring, fitness))
+        return new_population
+
 
     def _initialize_population(self):
         random.seed()
@@ -43,7 +86,10 @@ class Engine:
         population.sort(key=lambda x: x[1])
         fitnesses = [f[1] for f in population]
         avg = sum(fitnesses) / len(fitnesses)
-        return avg, population[0]
+        top_solutions_rate = self.top_solutions_probability
+        top_solutions = population[0:top_solutions_rate]
+        rest = population[top_solutions_rate:]
+        return avg, population[0], top_solutions, rest
 
     def _calc_fitness(self, coloring):
         fitness = 0
@@ -93,9 +139,11 @@ class Node:
 
 params = {
     'population_size': 1000,
-    'mutation_probability': 0.05,
-    'crossover_probability': 0.8,
-    'num vertex': 12
+    'mutation_probability': 0.2,
+    'crossover_probability': 0.95,
+    'num vertex': 12,
+    'number_of_iterations': 20,
+    'top_solutions_probability': 0.05
 }
 
 graph = Graph(adjMatrix)
