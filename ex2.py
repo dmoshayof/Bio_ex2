@@ -35,7 +35,7 @@ class Engine:
             new_crossovers = self.crossover(rest_population)
             population = top_solutions + new_crossovers
             self.mutate(population)
-            print(avg_fitness, best_fitness[1], len(population))
+            print(i, avg_fitness, best_fitness[1])
             colors_map = show_image.set_coloring_for_image(best_fitness)
             show_image.image(colors_map)
             if best_fitness[1] == 0:
@@ -64,7 +64,7 @@ class Engine:
         """
         new_population = []
         for gene1 in population:
-            gene2 = random.choice(population)
+            gene2 = random.choice(population[0:int(self.population_size/2)])
             cutoff = random.randint(0, self.num_of_vertex)
             coloring = {}
             count = 0
@@ -171,11 +171,11 @@ class Node:
 
 
 params = {
-    'population_size': 1000,
+    'population_size': 100,
     'mutation_probability': 0.2,
     'crossover_probability': 0.95,
-    'num vertex': 12,
-    'number_of_iterations': 20,
+    'num vertex': NUM_OF_NODES,
+    'number_of_iterations': 100,
     'top_solutions_probability': 0.05
 }
 

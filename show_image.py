@@ -16,9 +16,9 @@ def set_coloring_for_image(coloring):
             colors_num[v.ID] = [147, 112, 219]
     return colors_num
 
+img = cv2.imread(IMAGE_PATH)
 
-def image(colors_i):
-    img = cv2.imread(IMAGE_PATH)
+def set_data(colors_i):
     part1 = (41, 58)
     part2 = (90, 56, 175)
     part3 = (118, 57, 108)
@@ -69,7 +69,8 @@ def image(colors_i):
     img[part12[2]:250, part12[3]:420] = colors_i[12]  # side
     img[part12[0]:250, part12[1]:420] = colors_i[12]  # down
 
+def image(color_i):
+    set_data(color_i)
     cv2.imshow("img", img)
     key = cv2.waitKey(1000)
-    #cv2.waitKey()
     cv2.destroyAllWindows()
