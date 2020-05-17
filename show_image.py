@@ -72,5 +72,5 @@ def set_data(colors_i):
 def image(color_i):
     set_data(color_i)
     cv2.imshow("img", img)
-    key = cv2.waitKey(1000)
+    key = cv2.waitKey()
     cv2.destroyAllWindows()
